@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reporte Ejecutivo Activa | Liverpool — Cierre Mayo 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --pink:#E10098; --pink-soft:#f4a6d7; --pink-mid:#ed72bf;
+    --black:#0a0a0a; --carbon:#3F4444; --gray:#9CA3AF; --line:#EAEAEA;
+    --bg:#FFFFFF; --bg2:#F5F5F5; --bg3:#FAFAFB;
+    --pos:#1A9E5A; --neg:#CC3333; --wrn:#D4820A;
+    --pink-tint:rgba(225,0,152,.06); --pink-tint2:rgba(225,0,152,.12);
+    --sh:0 1px 2px rgba(0,0,0,.04); --sh2:0 10px 30px rgba(0,0,0,.09);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Roboto',-apple-system,sans-serif;color:#171717;background:var(--bg);line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+
+  /* HEADER + TABS */
+  header.top{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .top-row{max-width:1100px;margin:0 auto;padding:12px 24px 0;display:flex;align-items:center;justify-content:space-between}
+  .brand{font-weight:900;font-size:20px;letter-spacing:-.5px}
+  .brand .dot{color:var(--pink)}
+  .brand small{display:block;font-size:9px;font-weight:500;letter-spacing:2px;color:var(--gray);text-transform:uppercase;margin-top:-2px}
+  .top-row .date{font-size:11.5px;font-weight:700;color:var(--carbon);text-align:right;letter-spacing:.3px}
+  .tabs{max-width:1100px;margin:0 auto;padding:8px 24px 0;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tabbtn{flex:0 0 auto;font-size:13px;font-weight:600;color:var(--carbon);background:none;border:0;border-bottom:2.5px solid transparent;padding:9px 13px;cursor:pointer;white-space:nowrap;transition:.15s}
+  .tabbtn:hover{color:var(--pink)}
+  .tabbtn.active{color:var(--pink);border-bottom-color:var(--pink)}
+
+  .tab{display:none;animation:fade .28s ease}
+  .tab.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* HERO with pulse */
+  .hero{background:radial-gradient(120% 120% at 80% -10%,#1b1b1b 0%,#000 60%);color:#fff;padding:54px 0 50px;position:relative;overflow:hidden}
+  .hero .pulse{position:absolute;right:-60px;top:-40px;width:340px;height:340px}
+  .hero .pulse i{position:absolute;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%)}
+  .hero .pulse i:nth-child(1){width:38%;height:38%;background:var(--pink)}
+  .hero .pulse i:nth-child(2){width:62%;height:62%;background:rgba(225,0,152,.4)}
+  .hero .pulse i:nth-child(3){width:90%;height:90%;background:rgba(225,0,152,.14)}
+  .hero .wrap{position:relative}
+  .hero .kicker{display:inline-block;background:var(--pink);color:#fff;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:6px 14px;border-radius:20px;margin-bottom:18px}
+  .hero h1{font-size:clamp(27px,4.4vw,42px);font-weight:900;letter-spacing:-1px;line-height:1.06}
+  .hero h1 .pk{color:var(--pink-soft)}
+  .hero .sub{font-size:15.5px;color:#cfcfcf;margin-top:14px;max-width:700px}
+
+  /* SECTION SCAFFOLD */
+  .sec{padding:40px 0}
+  .kick{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--pink);text-transform:uppercase}
+  .sec-title{font-size:28px;font-weight:900;letter-spacing:-.7px;margin:6px 0 4px}
+  .sec-desc{color:var(--carbon);font-size:14.5px;margin-bottom:24px;max-width:780px;line-height:1.6}
+  h3.block{font-size:13px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--carbon);margin:30px 0 14px;display:flex;align-items:center;gap:9px}
+  h3.block::before{content:"";width:4px;height:15px;background:var(--pink);border-radius:2px}
+
+  /* RESUMEN SECTIONS (big, well separated) */
+  .rsec{padding:38px 0;border-top:1px solid var(--line)}
+  .rsec:first-of-type{border-top:0}
+  .rsec .rhead{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:6px}
+  .rsec .rnum{font-size:13px;font-weight:900;letter-spacing:2px;color:var(--pink)}
+  .rsec h2{font-size:25px;font-weight:900;letter-spacing:-.6px;line-height:1.1}
+  .rsec .rsum{font-size:15px;color:var(--carbon);line-height:1.62;max-width:820px;margin:8px 0 18px}
+  .rsub{font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--gray);margin:18px 0 12px}
+  .seelink{flex:0 0 auto;font-size:12.5px;font-weight:700;color:var(--pink);background:var(--pink-tint);border:1px solid rgba(225,0,152,.22);border-radius:20px;padding:6px 13px;cursor:pointer;white-space:nowrap;transition:.15s}
+  .seelink:hover{background:var(--pink);color:#fff}
+
+  /* KPI CARDS — richer */
+  .kgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .kgrid.k5{grid-template-columns:repeat(5,1fr)}
+  .kgrid.k3{grid-template-columns:repeat(3,1fr)}
+  @media(max-width:980px){.kgrid,.kgrid.k5{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:720px){.kgrid,.kgrid.k5,.kgrid.k3{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:460px){.kgrid,.kgrid.k5,.kgrid.k3{grid-template-columns:1fr}}
+  .kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 16px 14px;box-shadow:var(--sh);transition:.18s;position:relative;overflow:hidden}
+  .kpi::before{content:"";position:absolute;left:0;top:0;width:3px;height:100%;background:var(--gray)}
+  .kpi.accent::before{background:var(--pink)} .kpi.dn::before{background:var(--neg)} .kpi.ok::before{background:var(--pos)}
+  .kpi:hover{box-shadow:var(--sh2);transform:translateY(-3px)}
+  .kpi .lab{font-size:11.5px;font-weight:600;color:var(--carbon);min-height:28px}
+  .kpi .val{font-size:28px;font-weight:900;letter-spacing:-1px;margin:6px 0 6px;line-height:1}
+  .kpi .pilld{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px}
+  .p-up{background:rgba(26,158,90,.12);color:var(--pos)} .p-dn{background:rgba(204,51,51,.12);color:var(--neg)}
+  .p-flat{background:#eee;color:#666} .p-pink{background:var(--pink-tint2);color:var(--pink)}
+  .kpi .foot{font-size:10.5px;color:var(--gray);margin-top:7px;line-height:1.35}
+  .up{color:var(--pos)} .down{color:var(--neg)} .warn{color:var(--wrn)}
+
+  /* CALLOUTS */
+  .callout{border-radius:14px;padding:18px 22px;margin:18px 0;border-left:4px solid;box-shadow:var(--sh)}
+  .callout .ch{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+  .callout p{font-size:14.5px;line-height:1.6}
+  .callout p b{font-weight:700}
+  .callout ul{margin:0;padding-left:18px}
+  .callout li{font-size:14.5px;line-height:1.58;margin-bottom:7px}
+  .callout li:last-child{margin-bottom:0}
+  .c-insight{background:linear-gradient(180deg,var(--pink-tint),#fff);border-color:var(--pink)} .c-insight .ch{color:var(--pink)}
+  .c-risk{background:linear-gradient(180deg,#fff5f5,#fff);border-color:var(--neg)} .c-risk .ch{color:var(--neg)}
+  .c-warn{background:linear-gradient(180deg,#fffaf0,#fff);border-color:var(--wrn)} .c-warn .ch{color:var(--wrn)}
+  .note{font-size:12.5px;color:var(--carbon);background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:11px 14px;margin:14px 0;line-height:1.5}
+  .note b{color:var(--pink)}
+  .statusbar{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(90deg,rgba(212,130,10,.14),#fff);border:1px solid rgba(212,130,10,.32);border-radius:10px;padding:9px 15px;margin:4px 0 16px}
+  .statusbar .dotw{width:9px;height:9px;border-radius:50%;background:var(--wrn);box-shadow:0 0 0 3px rgba(212,130,10,.18)}
+  .statusbar .sl{font-size:12px;font-weight:600;color:var(--carbon)}
+  .statusbar .sv{font-size:13px;font-weight:800;color:var(--wrn);letter-spacing:.2px}
+
+  /* TABLES */
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;margin:8px 0;box-shadow:var(--sh)}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:540px}
+  th,td{padding:9px 12px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+  th:first-child,td:first-child{text-align:left}
+  thead th{background:var(--black);color:#fff;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+  tr.grp td{background:#fafafa;font-weight:700;color:var(--pink);font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+  tbody tr:hover{background:var(--pink-tint)}
+  td.pos{color:var(--pos);font-weight:600} td.neg{color:var(--neg);font-weight:600}
+  .tfoot{font-size:11px;color:var(--gray);padding:8px 4px}
+
+  /* CHARTS */
+  .chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:760px){.chart-grid{grid-template-columns:1fr}}
+  .chart-box{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 16px 8px;box-shadow:var(--sh)}
+  .chart-box h4{font-size:13px;font-weight:700;color:var(--carbon);margin-bottom:4px}
+  .chart-box .cap{font-size:11px;color:var(--gray);margin-bottom:10px}
+  .chart-canvas{position:relative;height:230px}
+
+  /* SEGMENT BARS */
+  .segrow{display:grid;grid-template-columns:140px 1fr 210px;gap:14px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line)}
+  .segrow:last-child{border:0}
+  .segrow .nm{font-size:13px;font-weight:700}
+  .segrow .nm small{display:block;font-weight:400;color:var(--gray);font-size:10.5px}
+  .bar{height:24px;background:var(--bg2);border-radius:6px;overflow:hidden;position:relative}
+  .bar span{position:absolute;left:0;top:0;height:100%;border-radius:6px}
+  .segrow .amt{text-align:right;font-weight:700;font-size:13px}
+  .segrow .amt small{display:block;font-weight:400;color:var(--gray);font-size:10.5px}
+  @media(max-width:520px){.segrow{grid-template-columns:1fr 1fr}.segrow .bar{display:none}}
+
+  /* CARDS */
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:760px){.cards{grid-template-columns:1fr}}
+  .card{border:1px solid var(--line);border-radius:14px;padding:20px;background:#fff;box-shadow:var(--sh);transition:.18s;position:relative;overflow:hidden}
+  .card::after{content:"";position:absolute;left:0;top:0;width:100%;height:3px;background:linear-gradient(90deg,var(--pink),var(--pink-mid))}
+  .card.red::after{background:linear-gradient(90deg,var(--neg),#ff7a7a)}
+  .card.amber::after{background:linear-gradient(90deg,var(--wrn),#f0b54e)}
+  .card.green::after{background:linear-gradient(90deg,var(--pos),#5fd29a)}
+  .card.gray::after{background:var(--gray)}
+  .card:hover{box-shadow:var(--sh2);transform:translateY(-3px)}
+  .card .ctop{display:flex;justify-content:space-between;align-items:start;gap:10px;margin:4px 0 6px}
+  .card h4{font-size:16px;font-weight:900;letter-spacing:-.3px}
+  .card .dates{font-size:11.5px;color:var(--gray);margin-bottom:12px}
+  .badge{font-size:10.5px;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap}
+  .b-gray{background:#eee;color:#555} .b-red{background:#fde8e8;color:var(--neg)}
+  .b-amber{background:#fff3e0;color:var(--wrn)} .b-green{background:#e6f6ec;color:var(--pos)}
+  .b-pink{background:var(--pink-tint2);color:var(--pink)}
+  .card p.desc{font-size:13px;color:var(--carbon);line-height:1.55;margin-bottom:14px}
+  .mini{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:6px}
+  @media(max-width:480px){.mini{grid-template-columns:repeat(2,1fr)}}
+  .mini .m{background:var(--bg3);border:1px solid var(--line);border-radius:10px;padding:10px}
+  .mini .m .mv{font-size:19px;font-weight:900;letter-spacing:-.5px}
+  .mini .m .ml{font-size:10.5px;color:var(--gray);line-height:1.3;margin-top:2px}
+  .mini .m.bad .mv{color:var(--neg)} .mini .m.good .mv{color:var(--pos)}
+  .hitos{margin-top:14px;border-top:1px dashed var(--line);padding-top:12px}
+  .hitos .ht{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--pink);margin-bottom:7px}
+  .hitos ul{margin:0;padding-left:17px}
+  .hitos li{font-size:12.5px;line-height:1.5;color:var(--carbon);margin-bottom:4px}
+  .hitos li:last-child{margin-bottom:0}
+
+  /* TIMELINE */
+  .tl{position:relative;margin:8px 0 8px 8px;padding-left:26px;border-left:2px solid var(--line)}
+  .tl .ev{position:relative;padding:0 0 20px}
+  .tl .ev:last-child{padding-bottom:0}
+  .tl .ev::before{content:"";position:absolute;left:-33px;top:2px;width:12px;height:12px;border-radius:50%;background:var(--pink);border:2px solid #fff;box-shadow:0 0 0 2px var(--pink)}
+  .tl .ev .d{font-size:12px;font-weight:700;color:var(--pink)}
+  .tl .ev .t{font-size:13.5px;font-weight:700;margin:1px 0}
+  .tl .ev .x{font-size:12.5px;color:var(--carbon)}
+
+  /* INCIDENT */
+  .inc{border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:12px;box-shadow:var(--sh)}
+  .inc .ih{display:flex;justify-content:space-between;align-items:start;gap:10px;margin-bottom:8px}
+  .inc .ih .it{font-size:14.5px;font-weight:700}
+  .inc .ih .idt{font-size:11px;color:var(--gray);margin-top:2px}
+  .inc .row{font-size:13px;line-height:1.5;margin-top:6px}
+  .inc .row b{color:var(--carbon)}
+  .pill{display:inline-block;font-size:11px;font-weight:700;padding:3px 9px;border-radius:12px}
+  .inc-mini{display:flex;flex-direction:column;gap:8px;margin:4px 0}
+  .inc-mini .im{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 14px;box-shadow:var(--sh)}
+  .inc-mini .im .imt{font-size:13px;font-weight:600;display:flex;align-items:center;gap:9px}
+  .inc-mini .im .imt b{flex:0 0 auto;width:20px;height:20px;border-radius:50%;background:var(--pink);color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center}
+  .inc-mini .im .imt small{display:block;color:var(--gray);font-weight:400;font-size:10.5px;margin-top:1px}
+
+  /* PRIORITIES */
+  .prio{counter-reset:p;margin-top:8px}
+  .prio .pi{display:flex;gap:16px;padding:18px 0;border-bottom:1px solid var(--line)}
+  .prio .pi:last-child{border:0}
+  .prio .pi::before{counter-increment:p;content:counter(p);flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:var(--pink);color:#fff;font-weight:900;font-size:15px;display:flex;align-items:center;justify-content:center}
+  .prio .pi h4{font-size:15px;font-weight:700;margin-bottom:3px}
+  .prio .pi p{font-size:13.5px;color:var(--carbon);line-height:1.55}
+  .prio .pi .pbul{margin:8px 0 0;padding-left:17px}
+  .prio .pi .pbul li{font-size:13px;line-height:1.5;color:var(--carbon)}
+
+  footer{background:var(--black);color:#888;padding:28px 0;font-size:12px;margin-top:6px}
+  footer b{color:#ddd}
+  footer .fbrand{font-weight:900;font-size:18px;color:#fff;margin-bottom:6px}
+  footer .fbrand .dot{color:var(--pink)}
+
+  /* ===== RESPONSIVE (móvil / tablet) ===== */
+  @media(max-width:820px){
+    .wrap{padding:0 18px}
+    .top-row{padding:11px 18px 0}
+    .tabs{padding:8px 18px 0}
+    .rsec .rhead{flex-wrap:wrap;align-items:flex-start}
+    .rsec .rhead .seelink{order:2}
+    .sec{padding:34px 0}
+  }
+  @media(max-width:600px){
+    .wrap{padding:0 14px}
+    .top-row{padding:10px 14px 0}
+    .top-row .date{font-size:10.5px}
+    .brand{font-size:18px}
+    .tabs{padding:6px 14px 0;gap:0}
+    .tabbtn{font-size:12.5px;padding:9px 10px}
+    .hero{padding:38px 0 34px}
+    .hero .pulse{width:220px;right:-50px;top:-30px;opacity:.7}
+    .sec{padding:28px 0}
+    .sec-title{font-size:23px}
+    .rsec{padding:30px 0}
+    .rsec h2{font-size:22px}
+    .rsec .rsum,.sec-desc{font-size:14px}
+    .kpi .val{font-size:25px}
+    .callout{padding:16px 16px}
+    .callout li,.callout p{font-size:14px}
+    .card{padding:17px}
+    .inc{padding:14px 15px}
+    .prio .pi{gap:12px}
+    .prio .pi::before{width:30px;height:30px;font-size:14px}
+    .segrow .amt{font-size:12px}
+    table{font-size:12px}
+    th,td{padding:8px 10px}
+  }
+  @media(max-width:400px){
+    .hero h1{font-size:24px}
+    .kpi .val{font-size:23px}
+    .mini{grid-template-columns:1fr 1fr}
+    .inc-mini .im{flex-direction:column;align-items:flex-start;gap:8px}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-row">
+    <div class="brand">Activ<span class="dot">a</span> <small>by Liverpool · Actinver</small></div>
+    <div class="date">Reporte Ejecutivo<br>Cierre Mayo 2026</div>
+  </div>
+  <div class="tabs" id="tabs">
+    <button class="tabbtn active" data-tab="resumen">Resumen</button>
+    <button class="tabbtn" data-tab="resultados">Resultados</button>
+    <button class="tabbtn" data-tab="iniciativas">Iniciativas estratégicas</button>
+    <button class="tabbtn" data-tab="spine">Migración SPINE</button>
+    <button class="tabbtn" data-tab="churn">Diagnóstico de churn</button>
+    <button class="tabbtn" data-tab="campanas">Campañas</button>
+    <button class="tabbtn" data-tab="enfoque">Prioridades Junio</button>
+  </div>
+</header>
+
+<!-- ===================== RESUMEN ===================== -->
+<div class="tab active" id="t-resumen">
+
+  <div class="hero">
+    <div class="pulse"><i></i><i></i><i></i></div>
+    <div class="wrap">
+      <span class="kicker">Resumen ejecutivo</span>
+      <h1>Activ<span class="pk">a</span> | Liverpool — Cierre <span class="pk">Mayo 2026</span></h1>
+    </div>
+  </div>
+
+  <div class="wrap">
+
+    <!-- 01 RESULTADOS -->
+    <section class="rsec">
+      <div class="rhead"><div><div class="rnum">01</div><h2>Resultados</h2></div><button class="seelink" data-go="resultados">Ver detalle →</button></div>
+      <p class="rsum">El AUM crece a <b>$228.7M (+3.1% / +$6.8M vs abril)</b>, mientras la captación del mes se contrae temporalmente por la migración SPINE. La calidad de la captación, en cambio, mejora a máximos históricos.</p>
+
+      <div class="rsub">Resultados acumulados a mayo 2026</div>
+      <div class="kgrid">
+        <div class="kpi accent"><div class="lab">AUM totales</div><div class="val">$228.7M</div><span class="pilld p-up">▲ +3.1% vs abril</span><div class="foot">+$6.8M · 103.9% PPTO · +82% desde lanzamiento</div></div>
+        <div class="kpi"><div class="lab">Cuentas acumuladas</div><div class="val">189,928</div><span class="pilld p-up">▲ +2.4% vs abril</span><div class="foot">130.4% del PPTO</div></div>
+        <div class="kpi"><div class="lab">Clientes fondeados</div><div class="val">35,786</div><span class="pilld p-up">▲ +0.4% vs abril</span><div class="foot">18.8% de las cuentas totales</div></div>
+        <div class="kpi dn"><div class="lab">% Fondeo cuentas totales</div><div class="val">18.8%</div><span class="pilld p-dn">▼ −0.4 pp vs abril</span><div class="foot">Mínimo histórico · −4.2 pp desde sep-25</div></div>
+      </div>
+
+      <div class="rsub">Resultados del mes</div>
+      <div class="kgrid">
+        <div class="kpi dn"><div class="lab">Cuentas nuevas</div><div class="val down">4,416</div><span class="pilld p-dn">▼ −62.8% vs prom. 2026</span><div class="foot">Prom. ene–abr: 11,871 · Impacto SPINE</div></div>
+        <div class="kpi dn"><div class="lab">Clientes nuevos</div><div class="val down">1,639</div><span class="pilld p-dn">▼ −44.7% vs prom. 2026</span><div class="foot">Prom. ene–abr: 2,962 · Impacto SPINE</div></div>
+        <div class="kpi accent"><div class="lab">% Fondeo cuentas nuevas</div><div class="val up">37.1%</div><span class="pilld p-up">▲ Mejor histórico</span><div class="foot">vs 20.1% promedio histórico</div></div>
+        <div class="kpi accent"><div class="lab">Primer fondeo promedio</div><div class="val up">$2,849</div><span class="pilld p-up">▲ +58.9% vs abril</span><div class="foot">Mejor calidad de captación</div></div>
+      </div>
+
+      <div class="callout c-insight">
+        <div class="ch">Punto a considerar — la calidad de captación mejora</div>
+        <p>Mayo captó <b>menos cuentas pero mejores</b>: el fondeo de cuentas nuevas alcanzó <b>37.1% (máximo histórico)</b> y el primer depósito promedio subió a <b>$2,849 (+59%)</b>.</p>
+      </div>
+
+      <div class="rsub">Distribución por segmento de valor</div>
+      <div class="segrow">
+        <div class="nm">Valor alto<small>&gt; $20,000</small></div>
+        <div class="bar"><span style="width:80%;background:linear-gradient(90deg,var(--pink),var(--pink-mid))"></span></div>
+        <div class="amt">~$184M · 80%<small>2,773 clientes (7.7%)</small></div>
+      </div>
+      <div class="segrow">
+        <div class="nm">Valor medio<small>$5,000 – $19,999</small></div>
+        <div class="bar"><span style="width:13%;background:var(--pink-mid)"></span></div>
+        <div class="amt">~$30M · 13%<small>3,134 clientes (8.8%)</small></div>
+      </div>
+      <div class="segrow">
+        <div class="nm">Valor bajo<small>$1 – $4,999</small></div>
+        <div class="bar"><span style="width:6%;background:var(--gray)"></span></div>
+        <div class="amt">~$14M · 6%<small>27,247 clientes (76.1%)</small></div>
+      </div>
+      <p class="tfoot">El 16.5% de los clientes (alto + medio) concentra el 93% del AUM.</p>
+    </section>
+
+    <!-- 02 MIGRACIÓN SPINE -->
+    <section class="rsec">
+      <div class="rhead"><div><div class="rnum">02</div><h2>Migración SPINE</h2></div><button class="seelink" data-go="spine">Ver detalle →</button></div>
+      <p class="rsum">La migración de SPINE a nivel core se encuentra <b>en proceso de estabilización</b>; los principales retos se concentraron en el onboarding y se han mitigado mediante acciones de contención, monitoreo reforzado y recuperación progresiva del servicio.</p>
+      <div class="statusbar"><span class="dotw"></span><span class="sl">Estatus de la migración core:</span><span class="sv">En estabilización</span></div>
+      <div class="kgrid k3">
+        <div class="kpi dn"><div class="lab">Impacto estimado en cuentas nuevas</div><div class="val down">~7,500</div></div>
+        <div class="kpi dn"><div class="lab">Impacto estimado en clientes nuevos</div><div class="val down">~800</div></div>
+        <div class="kpi dn"><div class="lab">Impacto estimado en AUM</div><div class="val down">~$2.3M</div></div>
+      </div>
+      <div class="rsub">Principales incidencias</div>
+      <div class="inc-mini">
+        <div class="im"><div class="imt"><b>1</b><div>Catálogo de colonias incompatible con SPINE</div></div><span class="badge b-amber">En estabilización</span></div>
+        <div class="im"><div class="imt"><b>2</b><div>Falla en el microservicio que genera la solicitud en SPINE</div></div><span class="badge b-green">Resuelto</span></div>
+        <div class="im"><div class="imt"><b>3</b><div>Intermitencia en microservicios</div></div><span class="badge b-gray">En análisis</span></div>
+        <div class="im"><div class="imt"><b>4</b><div>No se visualiza número de empleado Liverpool en reportes de originación</div></div><span class="badge b-amber">En estabilización</span></div>
+      </div>
+    </section>
+
+    <!-- 03 DIAGNÓSTICO CLIENTES CHURN -->
+    <section class="rsec">
+      <div class="rhead"><div><div class="rnum">03</div><h2>Diagnóstico clientes churn</h2></div><button class="seelink" data-go="churn">Ver detalle →</button></div>
+      <p class="rsum">Primer análisis profundo de la fuga de clientes. El hallazgo crítico: la salida se acelera justamente en los segmentos de valor que concentran el 93% del AUM, por lo que retener pasa a ser tan prioritario como captar.</p>
+      <div class="note"><b>Nota:</b> Clientes churn son aquellos clientes que durante más de 60 días ya no tienen ni saldos ni actividad.</div>
+      <div class="kgrid k3">
+        <div class="kpi dn"><div class="lab">Clientes churn 2026</div><div class="val">3,133</div><div class="foot">&gt;60 días sin saldo ni actividad</div></div>
+        <div class="kpi accent"><div class="lab">Churn de valor medio + alto</div><div class="val">1,119</div><div class="foot">36% del churn total · 699 medio + 420 alto</div></div>
+        <div class="kpi dn"><div class="lab">Clientes en riesgo activo</div><div class="val">2,632</div><div class="foot">Aún en la base · ventana de intervención abierta</div></div>
+      </div>
+      <div class="callout c-risk">
+        <div class="ch">Riesgos identificados</div>
+        <ul>
+          <li><b>Extinción del alto valor en ~3 años</b> de mantenerse la tasa actual (15% perdido en 5 meses) — pone en riesgo el 80% del AUM.</li>
+          <li><b>Pérdida total de la base media en menos de 2 años</b> (22% en 5 meses), cortando el flujo natural de migración hacia el alto valor.</li>
+          <li>El patrón de fuga aún no se detecta a tiempo: los 2,632 clientes en riesgo siguen la misma trayectoria sin alerta temprana.</li>
+        </ul>
+      </div>
+      <div class="callout c-insight">
+        <div class="ch">Siguientes pasos — plan de acción con Liverpool</div>
+        <p style="margin-bottom:10px">Objetivo conjunto Actinver + Liverpool: reactivar a los clientes churn de valor y evitar la fuga de los 2,632 clientes identificados en riesgo.</p>
+        <ul>
+          <li><b>Comunicación segmentada de Rendimientos Dinámicos:</b> dirigirla quirúrgicamente a los 2,632 en riesgo y a los 1,119 de valor ya perdidos (saldo histórico conocido), usando los canales de Liverpool (app, tienda, CRM).</li>
+          <li><b>Campaña de reactivación de churn de valor</b> diseñada en conjunto con Liverpool, con incentivo dirigido a recuperar saldo de alto y medio valor.</li>
+          <li><b>Activar Cashback Liverpool (jul)</b> como incentivo recurrente de uso que reenganche al cliente tras la apertura.</li>
+          <li><b>Alerta temprana de riesgo:</b> detectar con Liverpool el patrón 0–6 meses antes de cruzar los 60 días sin saldo, para intervenir antes del punto de no retorno.</li>
+          <li><b>Encuesta de salida</b> a clientes churn para entender la causa de fuga y complementar el análisis cuantitativo.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 04 CAMPAÑAS -->
+    <section class="rsec">
+      <div class="rhead"><div><div class="rnum">04</div><h2>Campañas del mes</h2></div><button class="seelink" data-go="campanas">Ver detalle →</button></div>
+      <p class="rsum">Se realizaron 4 campañas en el mes, pero los resultados se vieron afectados por la migración SPINE.</p>
+      <div class="note"><b>Importante:</b> hasta que los servicios no queden estabilizados al 100% no se reactivarán los esfuerzos de captación.</div>
+    </section>
+
+    <!-- 05 INICIATIVAS -->
+    <section class="rsec">
+      <div class="rhead"><div><div class="rnum">05</div><h2>Iniciativas estratégicas</h2></div><button class="seelink" data-go="iniciativas">Ver detalle →</button></div>
+      <p class="rsum">El plan de relanzamiento avanza; la liberación de las iniciativas clave queda condicionada a la estabilización de la migración.</p>
+      <div class="callout c-insight">
+        <ul>
+          <li><b>Rendimientos Dinámicos y Cashback Liverpool</b> están listos para liberar (liberación programada para el 15 de junio) y quedan a la espera de la estabilización de la migración SPINE.</li>
+          <li><b>Asesores Actinver en Tienda:</b> se afinan los últimos detalles para iniciar el piloto a partir del lunes 15 de junio — palanca para cerrar la brecha de fondeo en tienda (3.2% vs 37.3% digital).</li>
+          <li><b>Cajeros Banamex:</b> en conversaciones con Banamex; a partir de julio se habilitarían los cajeros de las 240 tiendas Liverpool y, desde 1Q27, la alianza se extendería a los +9,000 cajeros de toda la red Banamex.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 06 ENFOQUE JUNIO -->
+    <section class="rsec">
+      <div class="rhead"><div><div class="rnum">06</div><h2>Prioridades de junio</h2></div><button class="seelink" data-go="enfoque">Ver detalle →</button></div>
+      <p class="rsum">Mes de ejecución del relanzamiento: liberar Rendimientos Dinámicos y Cashback Liverpool sin contratiempos, destrabar el canal físico (REPSE y compensación), cerrar la estabilización de SPINE y activar la defensa del valor dirigiendo la retención a los segmentos en fuga.</p>
+    </section>
+
+  </div>
+</div>
+
+<!-- ===================== RESULTADOS (réplica dashboard) ===================== -->
+<div class="tab" id="t-resultados"><div class="wrap sec">
+  <div class="kick">Detalle · KPIs y evolutivo</div>
+  <h2 class="sec-title">Resultados — Cierre mayo 2026</h2>
+  <p class="sec-desc">Réplica de los indicadores del dashboard de gestión: KPIs acumulados y del mes, segmentos por valor, highlights y la serie evolutiva completa sep-25 → may-26.</p>
+
+  <h3 class="block">KPIs acumulados · Cierre mayo 2026</h3>
+  <div class="kgrid k5">
+    <div class="kpi accent"><div class="lab">AUM Total</div><div class="val">$228.7M</div><span class="pilld p-up">▲ +3.1% vs abril</span><div class="foot">PPTO 103.9% · +$6.8M · +82.2% desde lanzamiento</div></div>
+    <div class="kpi"><div class="lab">Clientes fondeados</div><div class="val">35,786</div><span class="pilld p-up">▲ +0.4% vs abril</span><div class="foot">18.8% de 189,928 cuentas</div></div>
+    <div class="kpi"><div class="lab">Cuentas acumuladas</div><div class="val">189,928</div><span class="pilld p-up">▲ +2.4% vs abril</span><div class="foot">PPTO 130.4%</div></div>
+    <div class="kpi dn"><div class="lab">% Fondeo acumulado</div><div class="val">18.8%</div><span class="pilld p-dn">▼ −0.4 pp vs abril</span><div class="foot">Tendencia a la baja desde sep-25 (23%)</div></div>
+    <div class="kpi"><div class="lab">Saldo promedio</div><div class="val">$6,392</div><span class="pilld p-up">▲ +2.7% vs abril</span><div class="foot">PPTO 110.6%</div></div>
+    <div class="kpi dn"><div class="lab">Cuentas nuevas mayo</div><div class="val">4,416</div><span class="pilld p-dn">▼ −62.8% vs prom. 2026</span><div class="foot">Prom. ene–abr: 11,871 · Impacto SPINE</div></div>
+    <div class="kpi dn"><div class="lab">Clientes nuevos mayo</div><div class="val">1,639</div><span class="pilld p-dn">▼ −44.7% vs prom. 2026</span><div class="foot">Prom. ene–abr: 2,962 · Impacto SPINE</div></div>
+    <div class="kpi accent"><div class="lab">% Fondeo cuentas nuevas</div><div class="val">37.1%</div><span class="pilld p-up">▲ Mejor histórico</span><div class="foot">vs 20.1% promedio histórico</div></div>
+    <div class="kpi accent"><div class="lab">Primer fondeo promedio</div><div class="val">$2,849</div><span class="pilld p-up">▲ +58.9% vs abril</span><div class="foot">Mejor calidad de captación</div></div>
+    <div class="kpi ok"><div class="lab">Transaccionalidad TDD</div><div class="val">$4.2M</div><span class="pilld p-up">▲ +24.5% vs abril</span><div class="foot">8,853 transacciones en el mes</div></div>
+  </div>
+
+  <h3 class="block">Segmentos por valor de cliente · Cierre mayo 2026</h3>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Segmento</th><th>Clientes</th><th>%</th><th>AUM est.</th><th>% AUM</th><th>Saldo prom.</th><th>vs PPTO</th></tr></thead>
+    <tbody>
+      <tr><td>Valor alto (&gt;$20k)</td><td>2,773</td><td>7.7%</td><td>~$184M</td><td>80%</td><td>$66,375</td><td class="pos">105.3%</td></tr>
+      <tr><td>Valor medio ($5k–$20k)</td><td>3,134</td><td>8.8%</td><td>~$30M</td><td>13%</td><td>$9,710</td><td class="neg">73.7%</td></tr>
+      <tr><td>Valor bajo ($1–$5k)</td><td>27,247</td><td>76.1%</td><td>~$14M</td><td>6%</td><td>$523</td><td class="neg">84.2%</td></tr>
+      <tr><td>Riesgo churn</td><td>2,632</td><td>7.4%</td><td>—</td><td>—</td><td colspan="2" style="text-align:left">Incluidos en seg. bajo · &gt;60 días sin saldo</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout c-insight">
+    <div class="ch">Highlights</div>
+    <ul>
+      <li><b>AUM $228.7M</b> — +82% desde lanzamiento.</li>
+      <li><b>Segmento alto:</b> 2,773 clientes · $184M AUM (80%) · +3.8% vs abril.</li>
+      <li><b>Captación mayo:</b> 4,416 cuentas / 1,639 clientes — −62.8% / −44.7% vs promedio 2026 por SPINE (~800 clientes no generados).</li>
+      <li><b>% Fondeo acumulado 18.8%</b> — mínimo histórico · −4.2 pp desde sep-25.</li>
+      <li><b>% Fondeo nuevas 37.1%</b> y primer fondeo prom. $2,849 — ambos mejores históricos.</li>
+    </ul>
+  </div>
+
+  <h3 class="block">Evolutivo · Sep-25 → May-26</h3>
+  <div class="chart-grid">
+    <div class="chart-box"><h4>AUM total ($MDP)</h4><div class="cap">Cuenta Eje + Fondos</div><div class="chart-canvas"><canvas id="cAum"></canvas></div></div>
+    <div class="chart-box"><h4>Captación mensual de cuentas y clientes nuevos</h4><div class="cap">El bache de mayo refleja el impacto SPINE</div><div class="chart-canvas"><canvas id="cCap"></canvas></div></div>
+    <div class="chart-box"><h4>% Fondeo: acumulado vs cuentas nuevas</h4><div class="cap">Acumulado a la baja; calidad de nuevas al alza</div><div class="chart-canvas"><canvas id="cFon"></canvas></div></div>
+    <div class="chart-box"><h4>Clientes por segmento de valor</h4><div class="cap">Concentración creciente del valor</div><div class="chart-canvas"><canvas id="cSeg"></canvas></div></div>
+  </div>
+
+  <h3 class="block">Detalle completo mensual</h3>
+  <div class="tbl-wrap"><div id="monthlyTable"></div></div>
+  <p class="tfoot">Fuente: Sistema Actinver · Cierre mayo 2026 · AUM en millones de pesos · Clientes = clientes fondeados (con saldo).</p>
+</div></div>
+
+<!-- ===================== MIGRACIÓN SPINE ===================== -->
+<div class="tab" id="t-spine"><div class="wrap sec">
+  <div class="kick">Detalle · Incidencias / SPINE</div>
+  <h2 class="sec-title">Migración SPINE — Mayo 2026</h2>
+  <p class="sec-desc">Ventana de migración: 30 abr – 16 may 2026 · <span class="pill b-amber">En estabilización</span></p>
+
+  <div class="callout c-warn">
+    <div class="ch">Mensaje ejecutivo</div>
+    <p>La migración de SPINE a nivel core se encuentra <b>en proceso de estabilización</b>; los principales retos se concentraron en el onboarding y se han mitigado mediante acciones de contención, monitoreo reforzado y recuperación progresiva del servicio.</p>
+  </div>
+
+  <h3 class="block">Cronología</h3>
+  <div class="tl">
+    <div class="ev"><div class="d">30 Abril</div><div class="t">Baja de servicios</div><div class="x">Ventana controlada de desconexión.</div></div>
+    <div class="ev"><div class="d">1 Mayo</div><div class="t">Migración de base de datos</div><div class="x">Migración de bases de datos a SPINE completada.</div></div>
+    <div class="ev"><div class="d">2–4 Mayo</div><div class="t">Validaciones e incidencias</div><div class="x">Se identifican incidencias críticas en onboarding e integraciones.</div></div>
+    <div class="ev"><div class="d">5 Mayo</div><div class="t">Resolución priorizada</div><div class="x">Contención, estabilización de microservicios y ajustes de datos / reportes.</div></div>
+    <div class="ev"><div class="d">6 Mayo</div><div class="t">Reactivación gradual</div><div class="x">Primeras aperturas exitosas y reactivación de flujo en canales.</div></div>
+  </div>
+
+  <h3 class="block">Estimación de impacto en KPIs</h3>
+  <div class="kgrid k3">
+    <div class="kpi dn"><div class="lab">Aperturas no generadas</div><div class="val down">7,500</div><div class="foot">Proyección de tendencia histórica</div></div>
+    <div class="kpi dn"><div class="lab">Clientes fondeados no generados</div><div class="val down">800</div><div class="foot">Captación de valor diferida</div></div>
+    <div class="kpi dn"><div class="lab">AUM nuevos no generados (MXN)</div><div class="val down">$2.3M</div><div class="foot">Recuperable vía backlog</div></div>
+  </div>
+  <p class="tfoot">Estimación basada en proyección de tendencia histórica de abril. El backlog de solicitudes en regularización podría recuperar parte del impacto en junio.</p>
+
+  <h3 class="block">Principales incidencias</h3>
+
+  <div class="inc">
+    <div class="ih"><div><div class="it">1 · Catálogo de colonias incompatible con SPINE</div><div class="idt">7 al 11 de mayo</div></div><span class="badge b-amber">En estabilización</span></div>
+    <div class="row"><b>Incidencia:</b> El catálogo de colonias no compatible con SPINE provocó bajo porcentaje de conversión en aperturas. Mayor contribuyente al impacto total.</div>
+    <div class="row"><b>Acción implementada:</b> Redireccionamiento de la consulta de colonias directamente a SPINE.</div>
+    <div class="row"><b>Impacto:</b> Bajo porcentaje de conversión durante el período afectado.</div>
+  </div>
+
+  <div class="inc">
+    <div class="ih"><div><div class="it">2 · Falla en el microservicio que genera la solicitud en SPINE</div><div class="idt">12 y 13 de mayo</div></div><span class="badge b-green">Resuelto</span></div>
+    <div class="row"><b>Incidencia:</b> Falla en el microservicio que genera la solicitud en SPINE provocó interrupción del flujo de aperturas.</div>
+    <div class="row"><b>Acción implementada:</b> Estabilización del microservicio.</div>
+    <div class="row"><b>Impacto:</b> Interrupción temporal del flujo (~24 hrs).</div>
+  </div>
+
+  <div class="inc">
+    <div class="ih"><div><div class="it">3 · Intermitencia en microservicios</div><div class="idt">14 al 16 de mayo</div></div><span class="badge b-gray">En análisis</span></div>
+    <div class="row"><b>Incidencia:</b> Intermitencia en microservicios causó baja conversión durante ventanas específicas.</div>
+    <div class="row"><b>Acción implementada:</b> Infraestructura está analizando. Fecha del diagnóstico: 12 de junio.</div>
+    <div class="row"><b>Impacto:</b> Baja conversión por aproximadamente 1 hr entre las 8 y 9 am.</div>
+  </div>
+
+  <div class="inc">
+    <div class="ih"><div><div class="it">4 · No se visualiza número de empleado Liverpool en reportes de originación</div><div class="idt">7 al 14 de mayo</div></div><span class="badge b-amber">En estabilización</span></div>
+    <div class="row"><b>Incidencia:</b> No se visualizaba el número de empleado Liverpool en los reportes de originación.</div>
+    <div class="row"><b>Acción implementada:</b> El dato ya replica en SPINE. La Oficina de Datos está trabajando en la lectura de la tabla.</div>
+    <div class="row"><b>Impacto:</b> Contingencia operativa temporal — generación manual de reportes.</div>
+  </div>
+
+  <div class="callout c-insight">
+    <div class="ch">Estatus actual</div>
+    <p>El proceso de aperturas se encuentra estable. A partir del <b>6 de junio</b> se reactivarán todos los flujos restantes bajo monitoreo constante.</p>
+  </div>
+</div></div>
+
+<!-- ===================== DIAGNÓSTICO DE CHURN ===================== -->
+<div class="tab" id="t-churn"><div class="wrap sec">
+  <div class="kick">Detalle · Retención</div>
+  <h2 class="sec-title">Diagnóstico de churn</h2>
+  <p class="sec-desc">Primer análisis profundo de clientes que ya salieron de la base activa. El objetivo: detectar el patrón de fuga temprano y actuar sobre los 2,632 en riesgo antes del punto de no retorno.</p>
+  <div class="note"><b>Nota:</b> Clientes churn son aquellos clientes que durante más de 60 días ya no tienen ni saldos ni actividad.</div>
+
+  <div class="kgrid">
+    <div class="kpi dn"><div class="lab">Clientes churn 2026</div><div class="val">3,133</div><div class="foot">Sin saldo ni movimientos &gt;60 días</div></div>
+    <div class="kpi accent"><div class="lab">Churn de valor medio + alto</div><div class="val">1,119</div><div class="foot">36% del churn total · 699 medio + 420 alto</div></div>
+    <div class="kpi dn"><div class="lab">Clientes en riesgo activo</div><div class="val">2,632</div><div class="foot">Ventana de intervención aún abierta</div></div>
+    <div class="kpi"><div class="lab">Saldo máx. prom. perdido (alto)</div><div class="val">$51,920</div><div class="foot">Valor histórico por cliente de alto valor</div></div>
+  </div>
+
+  <div class="cards" style="margin-top:24px">
+    <div class="card red">
+      <div class="ctop"><h4>Segmento alto valor</h4><span class="badge b-red">Fuga 36% anual</span></div>
+      <p class="dates">&gt; $20,000 de saldo</p>
+      <div class="mini">
+        <div class="m bad"><div class="mv">420</div><div class="ml">clientes perdidos</div></div>
+        <div class="m bad"><div class="mv">15%</div><div class="ml">de la base de alto valor</div></div>
+        <div class="m bad"><div class="mv">36%</div><div class="ml">tasa fuga anualizada</div></div>
+      </div>
+      <p class="desc" style="margin-top:14px">Si esta tasa se mantiene, <b>en 3 años no quedaría ningún cliente de alto valor</b> de los actuales — el segmento que sostiene el 80% del AUM.</p>
+    </div>
+    <div class="card amber">
+      <div class="ctop"><h4>Segmento valor medio</h4><span class="badge b-amber">Fuga 53% anual</span></div>
+      <p class="dates">$5,000 – $19,999 de saldo</p>
+      <div class="mini">
+        <div class="m bad"><div class="mv">699</div><div class="ml">clientes perdidos</div></div>
+        <div class="m bad"><div class="mv">22%</div><div class="ml">de la base de valor medio</div></div>
+        <div class="m bad"><div class="mv">53%</div><div class="ml">tasa fuga anualizada</div></div>
+      </div>
+      <p class="desc" style="margin-top:14px">A esta tasa, <b>en menos de 2 años se habría perdido toda la base actual de valor medio</b> — el segmento natural de migración hacia alto valor.</p>
+    </div>
+  </div>
+
+  <div class="callout c-risk" style="margin-top:24px">
+    <div class="ch">Riesgos identificados</div>
+    <ul>
+      <li><b>Extinción del alto valor en ~3 años</b> de mantenerse la tasa actual (15% perdido en 5 meses) — pone en riesgo el 80% del AUM.</li>
+      <li><b>Pérdida total de la base media en menos de 2 años</b> (22% en 5 meses), cortando el flujo natural de migración hacia el alto valor.</li>
+      <li>El patrón de fuga aún no se detecta a tiempo: los 2,632 clientes en riesgo siguen la misma trayectoria sin alerta temprana.</li>
+    </ul>
+  </div>
+
+  <div class="callout c-insight">
+    <div class="ch">Siguientes pasos — plan de acción con Liverpool</div>
+    <p style="margin-bottom:10px">Objetivo conjunto Actinver + Liverpool: reactivar a los clientes churn de valor y evitar la fuga de los 2,632 clientes identificados en riesgo.</p>
+    <ul>
+      <li><b>Comunicación segmentada de Rendimientos Dinámicos:</b> dirigirla quirúrgicamente a los 2,632 en riesgo y a los 1,119 de valor ya perdidos (saldo histórico conocido), usando los canales de Liverpool (app, tienda, CRM).</li>
+      <li><b>Campaña de reactivación de churn de valor</b> diseñada en conjunto con Liverpool, con incentivo dirigido a recuperar saldo de alto y medio valor.</li>
+      <li><b>Activar Cashback Liverpool (jul)</b> como incentivo recurrente de uso que reenganche al cliente tras la apertura.</li>
+      <li><b>Alerta temprana de riesgo:</b> detectar con Liverpool el patrón 0–6 meses antes de cruzar los 60 días sin saldo, para intervenir antes del punto de no retorno.</li>
+      <li><b>Encuesta de salida</b> a clientes churn para entender la causa de fuga y complementar el análisis cuantitativo.</li>
+    </ul>
+  </div>
+</div></div>
+
+<!-- ===================== CAMPAÑAS ===================== -->
+<div class="tab" id="t-campanas"><div class="wrap sec">
+  <div class="kick">Detalle · Adquisición</div>
+  <h2 class="sec-title">Campañas del mes</h2>
+  <p class="sec-desc">Se realizaron 4 campañas en el mes, pero los resultados se vieron afectados por la migración SPINE. Dos cerraron por debajo de lo esperado y dos siguen en análisis con resultados preliminares prometedores en transaccionalidad.</p>
+  <div class="note"><b>Importante:</b> hasta que los servicios no queden estabilizados al 100% no se reactivarán los esfuerzos de captación.</div>
+
+  <div class="cards">
+    <div class="card gray">
+      <div class="ctop"><h4>1 · Re-Activa tu Cuenta</h4><span class="badge b-gray">En análisis</span></div>
+      <p class="dates">16 abr – 16 may 2026</p>
+      <p class="desc">Reactivación de 4K cuentas inactivas/sin saldo. Mecánica: depósito inicial de $50 + bonificación 2% (tope $10K) sobre saldo mantenido.</p>
+      <div class="mini">
+        <div class="m bad"><div class="mv">249</div><div class="ml">reactivados (6.2% base)</div></div>
+        <div class="m"><div class="mv">$465K</div><div class="ml">fondeo generado</div></div>
+        <div class="m bad"><div class="mv">35</div><div class="ml">acreedores al incentivo</div></div>
+      </div>
+      <p class="desc" style="margin-top:12px">Inversión $200K. <b>Participación por debajo de lo esperado:</b> solo 6.2% de la base impactada se reactivó. Cuestionar repetición sin rediseño de mecánica.</p>
+    </div>
+
+    <div class="card red">
+      <div class="ctop"><h4>2 · Tiendas Celebra a Mamá</h4><span class="badge b-red">Campaña afectada</span></div>
+      <p class="dates">9 – 11 may 2026 (ext. 31 may)</p>
+      <p class="desc">Fondeo en tienda: certificado de spa a los primeros 3 clientes por tienda con depósito ≥ $6,000 (zonas 1 y 2 CDMX/EDOMEX).</p>
+      <div class="mini">
+        <div class="m bad"><div class="mv">12</div><div class="ml">certificados (vs 375 esp.)</div></div>
+        <div class="m bad"><div class="mv">$72K</div><div class="ml">fondeo (vs $2.2M esp.)</div></div>
+        <div class="m"><div class="mv">$562K</div><div class="ml">inversión</div></div>
+      </div>
+      <p class="desc" style="margin-top:12px"><b>Resultado distorsionado por SPINE:</b> los errores de apertura en tienda forzaron la extensión al 31 may y colapsaron la conversión. No es comparable contra meta.</p>
+    </div>
+
+    <div class="card gray">
+      <div class="ctop"><h4>3 · Activa tu Jugada — Fútbol</h4><span class="badge b-gray">En análisis</span></div>
+      <p class="dates">5 may – 5 jun 2026</p>
+      <p class="desc">Aprovecha el Mundial 2026: depósito ≥ $5,000 para participar por una experiencia VIP CDMX. Entre más ahorras, más probabilidades.</p>
+      <div class="mini">
+        <div class="m good"><div class="mv">$12.7M</div><div class="ml">fondeo generado</div></div>
+        <div class="m"><div class="mv">1,761</div><div class="ml">participantes</div></div>
+        <div class="m"><div class="mv">$600K</div><div class="ml">inversión</div></div>
+      </div>
+      <p class="desc" style="margin-top:12px">49,454 impactados · 4,178 depósitos · depósito promedio $12K. <b>El mejor desempeño en fondeo del mes</b> — validar atribución antes de cerrar.</p>
+    </div>
+
+    <div class="card gray">
+      <div class="ctop"><h4>4 · Cashback Hot Sale 10%</h4><span class="badge b-gray">En análisis</span></div>
+      <p class="dates">25 may – 2 jun 2026</p>
+      <p class="desc">10% de cashback sobre compras Liverpool (mín. $2,000, tope $1,000) acreditado en cuenta eje. Predecesor del Cashback 5% recurrente de julio.</p>
+      <div class="mini">
+        <div class="m"><div class="mv">10%</div><div class="ml">cashback compras</div></div>
+        <div class="m"><div class="mv">$1,000</div><div class="ml">tope bonificación</div></div>
+        <div class="m"><div class="mv">$600K</div><div class="ml">inversión</div></div>
+      </div>
+      <p class="desc" style="margin-top:12px">Resultados preliminares en consolidación. Es la <b>prueba de concepto del Cashback Liverpool permanente</b>; su lectura define la mecánica de julio.</p>
+    </div>
+  </div>
+
+  <div class="callout c-risk">
+    <div class="ch">La brecha estructural de conversión sigue abierta</div>
+    <p>Persiste el problema de fondo de la captación: la <b>tienda física fondea ~3.2%</b> de sus aperturas frente a <b>~37.3% en digital</b> — una brecha de 12x. Las campañas con incentivo táctico (spa, sorteos) no la cierran. La palanca de fondo es <b>Asesores Actinver en Tienda</b>, hoy bloqueada.</p>
+  </div>
+</div></div>
+
+<!-- ===================== INICIATIVAS ===================== -->
+<div class="tab" id="t-iniciativas"><div class="wrap sec">
+  <div class="kick">Detalle · Iniciativas estratégicas</div>
+  <h2 class="sec-title">Plan de relanzamiento — 10 iniciativas</h2>
+  <p class="sec-desc">Dos iniciativas listas para liberar en junio, una en marcha para arrancar el 15 de junio, y un roadmap de mediano plazo.</p>
+  <div class="note"><b>Importante:</b> la liberación de Rendimientos Dinámicos y Cashback Liverpool estaba programada para el 15 de junio; ambas quedan a la espera de la estabilización de la migración SPINE.</div>
+
+  <div class="cards">
+    <div class="card green">
+      <div class="ctop"><h4>Rendimientos Dinámicos</h4><span class="badge b-green">🟢 Listo para liberar (en espera de estabilización)</span></div>
+      <p class="dates">Liberación programada 15 jun 2026 · Resp. Alonso Cervantes</p>
+      <p class="desc">Estrategia de rendimientos diferenciados y escalables sobre saldos de Cuenta Eje, pago diario. Propuesta competitiva frente al mercado de cuentas de inversión. Tasas: sin mínimo 1–2% · $5k–$20k 3–4% · &gt;$20k 6–7% (sin/con portabilidad).</p>
+      <div class="mini">
+        <div class="m good"><div class="mv">+15,400</div><div class="ml">clientes valor medio</div></div>
+        <div class="m good"><div class="mv">+6,600</div><div class="ml">clientes valor alto</div></div>
+        <div class="m good"><div class="mv">+$564M</div><div class="ml">activos medio+alto</div></div>
+      </div>
+      <div class="hitos"><div class="ht">Hitos relevantes</div><ul>
+        <li>Microservicio liberado y en producción.</li>
+        <li>Primer cálculo de rendimientos en productivo (6 jun).</li>
+        <li>Siguiente paso: liberación del front (Go-Live), en espera de la estabilización de SPINE.</li>
+      </ul></div>
+    </div>
+
+    <div class="card green">
+      <div class="ctop"><h4>Cashback Liverpool</h4><span class="badge b-green">🟢 Listo para liberar (en espera de estabilización)</span></div>
+      <p class="dates">Liberación programada 15 jun 2026 · Resp. Alberto Aguirre</p>
+      <p class="desc">5% de cashback sobre compras en Liverpool, acreditado en cuenta Activa. El Hot Sale (10%, 25 may–2 jun) sirvió de prueba de concepto. Comunicación de inicio ~15 jun (post Día del Padre).</p>
+      <div class="mini">
+        <div class="m good"><div class="mv">+$396M</div><div class="ml">AUM esperado</div></div>
+        <div class="m good"><div class="mv">+$12M</div><div class="ml">transaccionalidad TDD</div></div>
+        <div class="m good"><div class="mv">+2.9x</div><div class="ml">ventas Liverpool</div></div>
+      </div>
+      <div class="hitos"><div class="ht">Hitos relevantes</div><ul>
+        <li>Resultados del Hot Sale disponibles (25 may – 2 jun).</li>
+        <li>Definir comunicación masiva de julio.</li>
+        <li>Alinear mecánica con el equipo Liverpool.</li>
+      </ul></div>
+    </div>
+  </div>
+
+  <div class="card green" style="margin-top:16px">
+    <div class="ctop"><h4>Asesores Actinver en Tienda</h4><span class="badge b-green">🟢 Salida 15 jun — afinando detalles</span></div>
+    <p class="dates">Lanzamiento a partir del lunes 15 jun 2026 · Resp. Rodrigo Guzmán</p>
+    <p class="desc">Piloto en 6 tiendas Liverpool (1 TOP + 1 LOW, Santa Fe confirmada) para cerrar la brecha de fondeo tienda (3.2%) vs digital (37.3%) mediante apertura y fondeo asistido. <b>Se están afinando los últimos detalles para salir a partir del lunes 15 de junio.</b></p>
+    <div class="callout c-insight" style="margin:8px 0 0">
+      <div class="ch">Últimos detalles en proceso</div>
+      <p>Cierre de REPSE y del esquema de compensación de asesores, en coordinación Actinver–Liverpool, para habilitar el arranque del piloto el 15 de junio.</p>
+    </div>
+    <div class="hitos"><div class="ht">Hitos relevantes</div><ul>
+      <li>Esquema de comisiones pendiente de aprobación.</li>
+      <li>Proceso de contratación de asesores en curso.</li>
+    </ul></div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <div class="ctop"><h4>Cajeros Banamex</h4><span class="badge b-pink">En desarrollo · en conversaciones</span></div>
+    <p class="dates">240 cajeros jul 2026 · Red Banamex 1Q27 · Resp. Beatriz Mejía</p>
+    <p class="desc">Ofrecer al cliente Activa el beneficio de exención de comisión bancaria por disposición de efectivo en cajeros Banamex. Hoy en conversaciones con Banamex: a partir de julio entraríamos a los cajeros de las 240 tiendas Liverpool y, desde 1Q27, la alianza se extendería a los +9,000 cajeros de toda la red Banamex.</p>
+    <div class="mini">
+      <div class="m"><div class="mv">240</div><div class="ml">cajeros en tiendas Liverpool · jul-26</div></div>
+      <div class="m"><div class="mv">+9,000</div><div class="ml">cajeros red Banamex · 1Q27</div></div>
+      <div class="m"><div class="mv">$0</div><div class="ml">comisión por disposición</div></div>
+    </div>
+    <div class="hitos"><div class="ht">Hitos relevantes</div><ul>
+      <li>Instalación de 240 cajeros Banamex dentro de tiendas Liverpool — fecha fin: julio 2026.</li>
+      <li>Extensión a la red Banamex (~9,000 cajeros, fuera de Liverpool) a partir de 1Q2027.</li>
+      <li>Incluye a nivel banco Actinver con sus 2 bines · BIN Activa 46969303.</li>
+      <li>Siguientes pasos: acuerdo de servicio, NDA Banamex–Actinver (Legal), confirmación de Banxico y configuración de bines.</li>
+    </ul></div>
+  </div>
+
+  <h3 class="block">Roadmap de mediano plazo</h3>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Iniciativa</th><th>Estatus</th><th>Horizonte</th><th>Riesgo principal</th></tr></thead>
+    <tbody>
+      <tr><td>Entrega de TDD en Tienda</td><td style="text-align:left"><span class="pill b-pink">En desarrollo</span></td><td style="text-align:left">Piloto 2026</td><td style="text-align:left">Migración de imagen TDD e inventario</td></tr>
+      <tr><td>Promociones PMR en POS</td><td style="text-align:left"><span class="pill b-pink">En desarrollo</span></td><td style="text-align:left">2026</td><td style="text-align:left">Negociación de tarjetas / proyectos alternos</td></tr>
+      <tr><td>Corresponsalía</td><td style="text-align:left"><span class="pill b-gray">En análisis</span></td><td style="text-align:left">Por definir</td><td style="text-align:left">Solicitud ante CNBV</td></tr>
+      <tr><td>Apertura Dual (TDC → Activa)</td><td style="text-align:left"><span class="pill b-gray">En análisis</span></td><td style="text-align:left">📌 Pendiente último SteerCo</td><td style="text-align:left">Validación de biométricos / datos</td></tr>
+      <tr><td>Retiro de efectivo desde POS</td><td style="text-align:left"><span class="pill b-gray">En análisis</span></td><td style="text-align:left">3Q27</td><td style="text-align:left">Velocidad de servicio y manejo de efectivo</td></tr>
+      <tr><td>Fondeo Activa por disposición TDC</td><td style="text-align:left"><span class="pill b-gray">En análisis</span></td><td style="text-align:left">2Q27</td><td style="text-align:left">Identificación de tarjeta origen</td></tr>
+    </tbody>
+  </table></div>
+</div></div>
+
+<!-- ===================== ENFOQUE ===================== -->
+<div class="tab" id="t-enfoque"><div class="wrap sec">
+  <div class="kick">Detalle · Prioridades</div>
+  <h2 class="sec-title">Prioridades de junio 2026</h2>
+  <p class="sec-desc">Junio es el mes para las primeras liberaciones de las iniciativas estratégicas, estabilizar SPINE y activar el plan para retener clientes de valor.</p>
+
+  <div class="prio">
+    <div class="pi"><div><h4>Liberar Rendimientos Dinámicos y Cashback Liverpool una vez estabilizada la migración</h4><p>Ambas estaban programadas para el 15 de junio y quedan a la espera de la estabilización de SPINE. Asegurar QA, comunicación y operación probadas para liberar sin contratiempos en cuanto el servicio esté estable.</p></div></div>
+    <div class="pi"><div><h4>Iniciar piloto de asesores Actinver en tiendas Liverpool</h4><p>Afinar los últimos detalles (REPSE y esquema de compensación, en coordinación con Liverpool) para arrancar el piloto el lunes 15 de junio. Es la palanca para cerrar la brecha estructural de fondeo en tienda (3.2% vs 37.3% digital).</p>
+    <ul class="pbul"><li><b>Visión a futuro:</b> evolucionar el módulo de atención de Activa en tiendas Liverpool hacia un espacio de asesoría financiera con identidad e imagen propias, al estilo del que El Corte Inglés ofrece hoy a sus clientes.</li></ul></div></div>
+    <div class="pi"><div><h4>Cerrar la estabilización de SPINE</h4><p>Resolver las incidencias remanentes y recuperar el backlog de ~7,500 aperturas diferidas. Los esfuerzos de captación no se reactivan hasta que los servicios estén estabilizados al 100%.</p></div></div>
+    <div class="pi"><div><h4>Activar el plan para disminuir el churn de clientes de valor</h4><p>Segmentar la comunicación hacia los 2,632 clientes en riesgo y los 1,119 de valor ya perdidos; encender la alerta temprana de churn y lanzar la encuesta de salida. La retención del valor es ahora tan crítica como la captación.</p></div></div>
+    <div class="pi"><div><h4>Compensar a la fuerza de venta de Liverpool afectada por SPINE</h4><p>Pagar a los asesores de crédito de Liverpool las comisiones que dejaron de percibir por la afectación de la migración SPINE, reconociendo el impacto en su ingreso y protegiendo la relación con el canal que origina la mayor parte de las aperturas en tienda.</p></div></div>
+  </div>
+</div></div>
+
+<footer><div class="wrap">
+  <div class="fbrand">Activ<span class="dot">a</span> | Liverpool</div>
+  Actinver · Reporte Ejecutivo Activa | Liverpool · <b>Cierre Mayo 2026</b><br>
+  Fuente: Sistema Actinver, cierre mayo 2026
+</div></footer>
+
+<script>
+const tabbtns=document.querySelectorAll('.tabbtn');
+const tabs=document.querySelectorAll('.tab');
+let chartsReady=false;
+function showTab(name){
+  tabs.forEach(t=>t.classList.toggle('active',t.id==='t-'+name));
+  tabbtns.forEach(b=>b.classList.toggle('active',b.dataset.tab===name));
+  window.scrollTo({top:0,behavior:'instant'});
+  if(name==='resultados'&&!chartsReady){buildMonthlyTable();initCharts();chartsReady=true;}
+}
+tabbtns.forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
+document.querySelectorAll('.seelink').forEach(l=>l.addEventListener('click',()=>showTab(l.dataset.go)));
+
+const RES={
+  meses:['Sep-25','Oct-25','Nov-25','Dic-25','Ene-26','Feb-26','Mar-26','Abr-26','May-26'],
+  cuentasAcum:[100006,113505,125616,137987,147767,159009,172652,185512,189928],
+  cuentasNuevas:[12850,12501,13068,11406,10115,11358,13156,12855,4416],
+  clientesAcum:[23032,24210,25749,28674,30332,31587,32685,35649,35786],
+  clientesNuevos:[2839,1763,2065,3406,2214,2447,2643,4545,1639],
+  upgradeAcum:[449,517,669,792,923,1009,1086,1164,1135],
+  fondeoAcum:[23.0,21.3,20.5,20.8,20.5,19.9,18.9,19.2,18.8],
+  fondeoNuevas:[22.1,14.1,15.8,29.9,21.9,21.5,20.1,35.4,37.1],
+  aumTotal:[125.5,135.7,145.8,175.0,194.7,207.6,210.7,221.9,228.7],
+  aumChequeras:[53.4,58.5,64.7,80.0,86.4,89.6,100.7,104.6,108.2],
+  aumFondos:[72.1,77.2,81.1,95.0,108.3,118.0,110.0,117.2,120.6],
+  saldoProm:[5449,5603,5662,6103,6418,6571,6448,6224,6392],
+  segBajo:[17343,18252,19515,21543,22585,23537,24461,27140,27247],
+  segMedio:[2130,2245,2376,2889,3105,3090,2993,3126,3134],
+  segAlto:[1642,1733,1837,2213,2405,2488,2537,2671,2773],
+  aumSegBajo:[10.1,10.6,11.3,12.4,12.9,13.7,14.0,14.5,14.2],
+  aumSegMedio:[20.3,21.4,22.7,27.6,29.8,30.0,29.3,30.3,30.4],
+  aumSegAlto:[95.1,103.7,111.7,135.2,152.0,163.9,167.4,177.0,184.1],
+  saldoSegBajo:[580,579,581,575,573,583,572,535,523],
+  saldoSegMedio:[9533,9525,9572,9557,9588,9698,9798,9698,9710],
+  saldoSegAlto:[57940,59840,60811,61103,63185,65868,65993,66282,66375],
+  txN:[6179,6670,6361,8755,7617,7737,9279,7501,8853],
+  txM:[2.90,2.89,3.14,4.36,4.16,3.84,4.29,3.40,4.23],
+  churnRiesgo:[1917,1980,2021,2029,2237,2472,2694,2712,2632],
+  churnMensual:[470,585,526,677,556,523,723,697,751],
+  churnPct:[2.15,2.48,2.11,2.49,1.88,1.69,2.25,2.04,2.10],
+};
+const nf=n=>n.toLocaleString('es-MX');
+const fmt={
+  int:v=>nf(Math.round(v)),
+  d1:v=>v.toFixed(1),
+  d2:v=>v.toFixed(2),
+  pct:v=>v.toFixed(1)+'%',
+  money0:v=>'$'+nf(Math.round(v)),
+};
+function buildMonthlyTable(){
+  const rows=[
+    ['grp','Cuentas'],
+    ['Cuentas acumuladas','cuentasAcum','int'],
+    ['Cuentas nuevas en mes','cuentasNuevas','int'],
+    ['grp','Clientes'],
+    ['Clientes fondeados acum.','clientesAcum','int'],
+    ['Clientes nuevos en mes','clientesNuevos','int'],
+    ['Clientes que aumentaron límite (acum.)','upgradeAcum','int'],
+    ['grp','Fondeo'],
+    ['% Fondeo cuentas totales','fondeoAcum','pct'],
+    ['% Fondeo cuentas nuevas','fondeoNuevas','pct'],
+    ['grp','AUM ($MDP)'],
+    ['AUM total','aumTotal','d1'],
+    ['AUM Cuenta Eje','aumChequeras','d1'],
+    ['AUM Fondos','aumFondos','d1'],
+    ['Saldo promedio por cliente ($)','saldoProm','money0'],
+    ['grp','Clientes por segmento'],
+    ['Valor bajo ($1–$5k)','segBajo','int'],
+    ['Valor medio ($5k–$20k)','segMedio','int'],
+    ['Valor alto (>$20k)','segAlto','int'],
+    ['grp','AUM por segmento ($MDP)'],
+    ['AUM valor bajo','aumSegBajo','d1'],
+    ['AUM valor medio','aumSegMedio','d1'],
+    ['AUM valor alto','aumSegAlto','d1'],
+    ['grp','Saldo promedio por segmento ($)'],
+    ['Saldo valor bajo','saldoSegBajo','money0'],
+    ['Saldo valor medio','saldoSegMedio','money0'],
+    ['Saldo valor alto','saldoSegAlto','money0'],
+    ['grp','Transaccionalidad TDD'],
+    ['Transacciones TDD (núm.)','txN','int'],
+    ['Monto TDD ($MDP)','txM','d2'],
+    ['grp','Churn'],
+    ['Clientes en riesgo churn','churnRiesgo','int'],
+    ['Churn en el mes','churnMensual','int'],
+    ['% Churn mensual','churnPct','pct'],
+  ];
+  let h='<table><thead><tr><th>KPI</th>'+RES.meses.map(m=>'<th>'+m+'</th>').join('')+'</tr></thead><tbody>';
+  for(const r of rows){
+    if(r[0]==='grp'){h+='<tr class="grp"><td colspan="'+(RES.meses.length+1)+'">'+r[1]+'</td></tr>';continue;}
+    const [lab,key,f]=r;
+    h+='<tr><td>'+lab+'</td>'+RES[key].map(v=>'<td>'+fmt[f](v)+'</td>').join('')+'</tr>';
+  }
+  h+='</tbody></table>';
+  document.getElementById('monthlyTable').innerHTML=h;
+}
+
+const PINK='#E10098',MID='#ed72bf',SOFT='#f4a6d7',GRAY='#9CA3AF',CARBON='#3F4444';
+function initCharts(){
+  Chart.defaults.font.family="Roboto, sans-serif";Chart.defaults.font.size=11;Chart.defaults.color=CARBON;
+  const ng={grid:{color:'#eee'},ticks:{maxRotation:0}};
+  const bo={responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10,boxHeight:10,padding:12,font:{size:10}}}}};
+  new Chart(cAum,{type:'line',data:{labels:RES.meses,datasets:[
+    {label:'Cuenta Eje',data:RES.aumChequeras,borderColor:MID,backgroundColor:'rgba(237,114,191,.08)',fill:true,tension:.3,borderWidth:2,pointRadius:0},
+    {label:'Fondos',data:RES.aumFondos,borderColor:PINK,backgroundColor:'rgba(225,0,152,.08)',fill:true,tension:.3,borderWidth:2,pointRadius:0}
+  ]},options:{...bo,scales:{x:ng,y:{...ng,ticks:{callback:v=>'$'+v+'M'}}}}});
+  new Chart(cCap,{type:'bar',data:{labels:RES.meses,datasets:[
+    {label:'Cuentas nuevas',data:RES.cuentasNuevas,backgroundColor:SOFT,borderRadius:3},
+    {label:'Clientes nuevos',data:RES.clientesNuevos,backgroundColor:PINK,borderRadius:3}
+  ]},options:{...bo,scales:{x:ng,y:ng}}});
+  new Chart(cFon,{type:'line',data:{labels:RES.meses,datasets:[
+    {label:'% Fondeo acumulado',data:RES.fondeoAcum,borderColor:GRAY,borderWidth:2,tension:.3,pointRadius:0},
+    {label:'% Fondeo cuentas nuevas',data:RES.fondeoNuevas,borderColor:PINK,borderWidth:2.5,tension:.3,pointRadius:0}
+  ]},options:{...bo,scales:{x:ng,y:{...ng,ticks:{callback:v=>v+'%'}}}}});
+  new Chart(cSeg,{type:'bar',data:{labels:RES.meses,datasets:[
+    {label:'Bajo',data:RES.segBajo,backgroundColor:GRAY,borderRadius:2},
+    {label:'Medio',data:RES.segMedio,backgroundColor:MID,borderRadius:2},
+    {label:'Alto',data:RES.segAlto,backgroundColor:PINK,borderRadius:2}
+  ]},options:{...bo,scales:{x:{...ng,stacked:true},y:{...ng,stacked:true}}}});
+}
+</script>
+</body>
+</html>
